@@ -1,0 +1,23 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Column {
+  id       String  @id @default(cuid())
+  title    String
+  tasks    Task[]
+}
+
+model Task {
+  id          String  @id @default(cuid())
+  content     String
+  importance  String
+  urgency     String
+  columnId    String
+  column      Column  @relation(fields: [columnId], references: [id])
+}
