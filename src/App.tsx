@@ -7,7 +7,7 @@ import { Column } from "./components/Column.tsx";
 import React from "react";
 
 type Task = {
-  id: string;
+  id: number;
   content: string;
   importance: "high" | "low";
   urgency: "urgent" | "not urgent";
@@ -40,7 +40,7 @@ export default function App() {
           tasks: [
             ...column.tasks,
             {
-              id: Date.now().toString(),
+              id: Date.now(),
               content: newTask,
               importance,
               urgency,
@@ -76,6 +76,7 @@ export default function App() {
     setColumns(updatedColumns);
   };
 
+  // adds a new column
   const addColumn = () => {
     if (newColumnTitle.trim() === "") return;
 
@@ -85,6 +86,7 @@ export default function App() {
       tasks: [],
     };
 
+    // interaction with database
     const addColumnToDatabase = async () => {
       try {
         const response = await fetch(
@@ -101,7 +103,7 @@ export default function App() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const res = await response.json();
+        const res = await response.text();
         console.log(res);
       } catch (error) {
         console.error("Failed to add column to database:", error);
@@ -121,6 +123,30 @@ export default function App() {
     );
 
     if (!isConfirmed) return; // If the user cancels, stop the deletion.
+
+    // interaction with database
+    const removeColumnFromDatabase = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/domainColumn/delete",
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: columnId }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const res = await response.text();
+        console.log(res);
+      } catch (error) {
+        console.error("Failed to delete column to database:", error);
+      }
+    };
+    removeColumnFromDatabase();
 
     setColumns(columns.filter((column) => column.id !== columnId));
   };
