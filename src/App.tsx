@@ -85,6 +85,30 @@ export default function App() {
       tasks: [],
     };
 
+    const addColumnToDatabase = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/domainColumn/add",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title: newColumn.title }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const res = await response.json();
+        console.log(res);
+      } catch (error) {
+        console.error("Failed to add column to database:", error);
+      }
+    };
+    addColumnToDatabase();
+
     setColumns([...columns, newColumn]);
     setNewColumnTitle("");
     setSelectedColumn(newColumn.id);
