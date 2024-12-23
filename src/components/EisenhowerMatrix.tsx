@@ -1,19 +1,22 @@
+import React from "react";
+
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "./ui/button";
+import { ScrollArea } from "../components/ui/scroll-area.tsx";
+import { Button } from "./ui/button.tsx";
 import { X } from "lucide-react";
 
 type Task = {
-  id: string;
+  id: number;
   content: string;
   importance: "high" | "low";
   urgency: "urgent" | "not urgent";
 };
 
 type EisenhowerMatrixProps = {
-  columnId: string;
+  columnId: number;
   tasks: Task[];
   getTaskColor: (importance: string, urgency: string) => string;
+  removeTask: (columnId: number, taskId: number) => void;
 };
 
 export const EisenhowerMatrix = ({
@@ -56,7 +59,7 @@ export const EisenhowerMatrix = ({
           key={`${columnId}-${quadrant.importance}-${quadrant.urgency}`}
           droppableId={`${columnId}-${quadrant.importance}-${quadrant.urgency}`}
         >
-          {(provided) => (
+          {(provided: any) => (
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
@@ -77,7 +80,7 @@ export const EisenhowerMatrix = ({
                         draggableId={task.id}
                         index={index}
                       >
-                        {(provided) => (
+                        {(provided: any) => (
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}

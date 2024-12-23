@@ -1,13 +1,20 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card.tsx";
+import { Button } from "../components/ui/button";
+// import { Button } from "../components/ui/Button.tsx";
 import { X } from "lucide-react";
-import { EisenhowerMatrix } from "./EisenhowerMatrix";
+import { EisenhowerMatrix } from "./EisenhowerMatrix.tsx";
 import { Task } from "@/types";
 
 type ColumnProps = {
-  column: { id: string; title: string; tasks: Task[] };
-  removeColumn: (id: string) => void;
-  removeTask: (id1: string, id2: string) => void;
+  column: { id: number; title: string; tasks: Task[] };
+  removeColumn: (id: number) => void;
+  removeTask: (id1: number, id2: number) => void;
   getTaskColor: (importance: string, urgency: string) => string;
 };
 
